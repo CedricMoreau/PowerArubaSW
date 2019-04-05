@@ -15,7 +15,7 @@ function Get-ArubaSWCli {
         Get the result of a cli command.
 
         .EXAMPLE
-        Get-ArubaSWCli -cmd "Show running config"
+        Get-ArubaSWCli -cmd "Show running-config"
         This function give you the result of a cli command on the switch.
     #>
 
@@ -36,6 +36,10 @@ function Get-ArubaSWCli {
         $run | add-member -name "cmd" -membertype NoteProperty -Value "$cmd"
 
         $response = invoke-ArubaSWWebRequest -method "POST" -body $run -url $url
+
+        $conf = ($response | ConvertFrom-Json)
+
+        $conf
 
         $conf = ($response | ConvertFrom-Json).result_base64_encoded
 
